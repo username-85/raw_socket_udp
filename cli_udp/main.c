@@ -55,9 +55,9 @@ int main (int argc, char *argv[])
 	else
 		printf("packet send. length : %d \n", nbytes);
 
-	int msgs_num = 2; // 1 for send +  1 for received 
+	int msgs_num = 2; // 1 for send +  1 for received
 	print_msgs(rsock, msgs_num);
-	
+
 	exit(EXIT_SUCCESS);
 }
 
@@ -71,8 +71,8 @@ static void print_msgs(int sock, int msgs_num)
 			err_sys_exit("recv");
 		buf[nbytes]='\0';
 
-		printf("received %d bytes, message '%s'\n", nbytes, 
-		        buf+ sizeof(struct iphdr) + sizeof(struct udphdr));
+		printf("received %d bytes, message '%s'\n", nbytes,
+		       buf+ sizeof(struct iphdr) + sizeof(struct udphdr));
 	}
 }
 

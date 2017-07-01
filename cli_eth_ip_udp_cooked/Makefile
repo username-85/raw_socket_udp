@@ -4,7 +4,7 @@ CFLAGS = -std=gnu99 -g -O0
 
 .PHONY: default all clean
 
-TARGET = server
+TARGET = client
 OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
 HEADERS = $(wildcard *.h)
 

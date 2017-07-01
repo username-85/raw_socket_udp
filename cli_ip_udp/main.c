@@ -41,8 +41,8 @@ int main (int argc, char *argv[])
 
 	struct udphdr *udph = (struct udphdr *)(datagram + sizeof(struct iphdr));
 	set_udph(udph, strlen(data), cli_port, srv_port);
-	
-	int ip_totlen = sizeof(struct iphdr) + sizeof(struct udphdr) 
+
+	int ip_totlen = sizeof(struct iphdr) + sizeof(struct udphdr)
 	                + strlen(data);
 	struct iphdr* iph = (struct iphdr *)datagram;
 	set_iph(iph, ip_totlen, srv_ip);
@@ -60,8 +60,8 @@ int main (int argc, char *argv[])
 		err_exit("sendto failed");
 	else
 		printf("packet send. length : %d \n", nbytes);
-	
-	int msgs_num = 2; // 1 for send +  1 for received 
+
+	int msgs_num = 2; // 1 for send +  1 for received
 	print_msgs(rsock, msgs_num);
 
 	exit(EXIT_SUCCESS);
@@ -86,7 +86,7 @@ int make_rsock(void)
 
 void set_iph(struct iphdr * iph, int tot_len, char *srv_ip)
 {
-	iph->ihl = sizeof(struct iphdr) / sizeof (uint32_t); 
+	iph->ihl = sizeof(struct iphdr) / sizeof (uint32_t);
 	iph->version = 4;
 	iph->tos = 0;
 	iph->tot_len = tot_len;
@@ -117,8 +117,8 @@ static void print_msgs(int sock, int msgs_num)
 			err_sys_exit("recv");
 		buf[nbytes]='\0';
 
-		printf("received %d bytes, message '%s'\n", nbytes, 
-		        buf+ sizeof(struct iphdr) + sizeof(struct udphdr));
+		printf("received %d bytes, message '%s'\n", nbytes,
+		       buf+ sizeof(struct iphdr) + sizeof(struct udphdr));
 	}
 }
 

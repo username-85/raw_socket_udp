@@ -36,7 +36,6 @@ int main(void)
 
 		numbytes = sendto(sockfd, msg, strlen(msg), 0,
 		                  (struct sockaddr *)&client_addr, ca_size);
-
 		if (numbytes == -1)
 			err_sys_exit("sendto");
 	}
