@@ -28,7 +28,7 @@ void set_iph(struct iphdr * iph, int ip_tot_len, int socket, char *interface,
              char *srv_ip);
 void set_udph(struct udphdr * udph, int data_len, int cli_port, int srv_port);
 int set_saddr(struct sockaddr_ll *saddr, int socket, char *interface);
-static void print_packets(int sock, int pnum, char *interface);
+static void print_packets(int sock, int pnum);
 
 int main(int argc, char *argv[])
 {
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 		printf("packet send. length : %d \n", nbytes);
 
 	int packets_num = 1;
-	print_packets(rsock, packets_num, ifname);
+	print_packets(rsock, packets_num);
 
 	exit(EXIT_SUCCESS);
 }
@@ -177,32 +177,18 @@ int set_saddr(struct sockaddr_ll *saddr, int socket, char *interface)
 	return 0;
 }
 
-static void print_packets(int sock, int pnum, char *interface)
+static void print_packets(int sock, int pnum)
 {
-	struct ifreq if_idx = {0};
-	strncpy(if_idx.ifr_name, interface, IFNAMSIZ - 1);
-	if (ioctl(sock, SIOCGIFINDEX, &if_idx) < 0)
-		return;
-	
-	struct sockaddr_ll saddr = {0};
-	saddr.sll_ifindex = if_idx.ifr_ifindex;
-	saddr.sll_halen   = ETH_ALEN;
-	saddr.sll_family  = PF_PACKET;
-	saddr.sll_hatype  = ARPHRD_ETHER;
-	saddr.sll_pkttype = PACKET_HOST;
-	int saddr_len = sizeof(saddr);
-
 	for (int i = 0; i < pnum; i++) {
 		char buf[MAX_DSIZE] = {0};
 
-		int nbytes = recvfrom(sock, buf, MAX_DSIZE, 0,
-		             (struct sockaddr*)&saddr, &saddr_len);
+		int nbytes = recv(sock, buf, MAX_DSIZE - 1, 0);
 		if (nbytes == -1)
 			err_sys_exit("recv");
 		buf[nbytes]='\0';
 
 		printf("received %d bytes, message '%s'\n", nbytes,
-		       buf + sizeof(struct ethhdr) +  sizeof(struct iphdr)
+		       buf + sizeof(struct ethhdr) + sizeof(struct iphdr) 
 		       + sizeof(struct udphdr));
 	}
 }
