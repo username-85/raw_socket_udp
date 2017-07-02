@@ -1,6 +1,5 @@
 CC = gcc
-#CFLAGS = -std=gnu99 -Wall -Wextra -Werror -pedantic -g -O0
-CFLAGS = -std=gnu99 -g -O0
+CFLAGS = -std=gnu99 -Wall -Wextra -Werror -pedantic -g -O0
 
 .PHONY: default all clean
 
